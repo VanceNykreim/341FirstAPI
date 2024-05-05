@@ -18,7 +18,9 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const contactId = req.params.id;
-        // Fetch a contact by ID from the database
+        if (!mongoose.Types.ObjectId.isValid(contactId)) {
+            return res.status(400).json({ error: 'Invalid contact ID' });
+        }
         const contact = await Contact.findById(contactId);
         if (!contact) {
             return res.status(404).json({ error: 'Contact not found' });
