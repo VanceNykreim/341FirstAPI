@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Contact = require('./models/Contact'); // Assuming you have a Contact model
 
+
 // GET /contacts - Get all contacts
 router.get('/', async (req, res) => {
     try {
@@ -34,9 +35,31 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST /contacts - Create a new contact
-router.post('/', (req, res) => {
-    // Your logic to create a new contact in the database
-    res.send('Create a new contact');
+router.post('/', async (req, res) => {
+    try {
+        // Extract fields from the request body
+        const { firstName, lastName, email, favoriteColor, birthday } = req.body;
+
+        // Validate required fields
+        if (!firstName || !lastName || !email || !favoriteColor || !birthday) {
+            return res.status(400).json({ error: 'All fields are required' });
+        }
+
+        // Create a new contact in the database
+        const newContact = await Contact.create({
+            firstName,
+            lastName,
+            email,
+            favoriteColor,
+            birthday
+        });
+
+        // Return the new contact ID in the response body
+        res.status(201).json({ id: newContact._id });
+    } catch (err) {
+        console.error('Error creating contact:', err.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 // PUT /contacts/:id - Update a contact by ID
