@@ -63,17 +63,55 @@ router.post('/', async (req, res) => {
 });
 
 // PUT /contacts/:id - Update a contact by ID
-router.put('/:id', (req, res) => {
-    const contactId = req.params.id;
-    // Your logic to update a contact by ID in the database
-    res.send(`Update contact with ID ${contactId}`);
+router.put('/:id', async (req, res) => {
+    try {
+        const contactId = req.params.id;
+
+        // Check if the provided ID is valid
+        if (!mongoose.Types.ObjectId.isValid(contactId)) {
+            return res.status(400).json({ error: 'Invalid contact ID' });
+        }
+
+        // Find the contact by ID and update its fields
+        const updatedContact = await Contact.findByIdAndUpdate(contactId, req.body, { new: true });
+
+        // Check if the contact exists
+        if (!updatedContact) {
+            return res.status(404).json({ error: 'Contact not found' });
+        }
+
+        // Return success response
+        res.status(204).json({ message: 'Contact updated successfully' });
+    } catch (err) {
+        console.error('Error updating contact:', err.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 // DELETE /contacts/:id - Delete a contact by ID
-router.delete('/:id', (req, res) => {
-    const contactId = req.params.id;
-    // Your logic to delete a contact by ID from the database
-    res.send(`Delete contact with ID ${contactId}`);
+router.delete('/:id', async (req, res) => {
+    try {
+        const contactId = req.params.id;
+
+        // Check if the provided ID is valid
+        if (!mongoose.Types.ObjectId.isValid(contactId)) {
+            return res.status(400).json({ error: 'Invalid contact ID' });
+        }
+
+        // Find the contact by ID and delete it
+        const deletedContact = await Contact.findByIdAndDelete(contactId);
+
+        // Check if the contact exists
+        if (!deletedContact) {
+            return res.status(404).json({ error: 'Contact not found' });
+        }
+
+        // Return success response
+        res.status(200).json({ message: 'Contact deleted successfully' });
+    } catch (err) {
+        console.error('Error deleting contact:', err.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 module.exports = router;
