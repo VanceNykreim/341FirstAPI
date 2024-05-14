@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Contact = require('./models/Contact'); // Assuming you have a Contact model
+const Contact = require('../models/Contact'); // Assuming you have a Contact model
 
 
 // GET /contacts - Get all contacts

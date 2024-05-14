@@ -11,7 +11,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Require the contacts route file
-const contactsRouter = require('./contacts');
+const contactsRouter = require('./routes/contacts');
+const indexRouter = require('./routes/index');
+
+app.use('/', indexRouter);
 
 // Mount the contacts router
 app.use('/contacts', contactsRouter);
