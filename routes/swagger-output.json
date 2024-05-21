@@ -5,36 +5,13 @@
     "description": "Description",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
-    "/api/name": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api-docs": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/contacts/": {
+    "/": {
       "get": {
         "description": "",
         "responses": {
@@ -87,7 +64,7 @@
         }
       }
     },
-    "/contacts/{id}": {
+    "/{id}": {
       "get": {
         "description": "",
         "parameters": [
@@ -160,6 +137,16 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api-docs": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
